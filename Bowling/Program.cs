@@ -7,20 +7,14 @@ namespace Bowling
     {
         static void Main(string[] args)
         {
-
-            Console.WriteLine("Welcome To The Bowling");
+            var random = new Random();
             var game = new Game();
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 0);
-            game.RollBowling(10, 10);
+            for(int i = 0; i < Game.maxFrames; i++)
+            {
+                int firstShot = random.Next(0, Frame.NumberOfPins);
+                int secondShot = random.Next(0, Frame.NumberOfPins - firstShot + 1);
+                game.RollBowling(firstShot, secondShot);
+            }
 
             game.PrintScoreboard();
         }

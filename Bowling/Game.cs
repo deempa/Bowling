@@ -28,7 +28,7 @@ namespace Bowling
                 frames[^2].AddExtra(firstShot);
                 return;
             }
-
+            
             if (frames.Count == maxFrames)
             {
                 throw new GameoverException("Game is over");
