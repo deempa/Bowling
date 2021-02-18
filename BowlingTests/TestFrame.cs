@@ -15,7 +15,7 @@ namespace BowlingTests
         [Test]
         public void TestFrameIsSpare()
         {
-            var frame = new Frame(4, 6);
+            var frame = new Frame(Frame.NumberOfPins - 1, 1);
 
             Assert.IsTrue(frame.IsSpare());
         }   
@@ -23,7 +23,7 @@ namespace BowlingTests
         [Test]
         public void TestFrameIsStrike()
         {
-            var frame = new Frame(10, 0);
+            var frame = new Frame(Frame.NumberOfPins, 0);
 
             Assert.IsTrue(frame.IsStrike());
         }   
@@ -31,7 +31,7 @@ namespace BowlingTests
         [Test]
         public void TestFrameIsNotStrikeAndNotSpare()
         {
-            var frame = new Frame(5, 3);
+            var frame = new Frame(Frame.NumberOfPins - 1, 0);
 
             Assert.IsFalse(frame.IsStrike());
             Assert.IsFalse(frame.IsSpare());

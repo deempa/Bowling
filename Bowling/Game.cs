@@ -7,6 +7,8 @@ namespace Bowling
     public class Game
     {
         List<Frame> frames;
+        public static int maxFrames = 10;
+        int extraShots = 0;
 
         public Game()
         {
@@ -15,32 +17,112 @@ namespace Bowling
 
         public void RollBowling(int firstShot, int secondShot)
         {
-            var frame = new Frame(firstShot, secondShot);
-            if (frames.Count > 0)
+            if (extraShots == 1)
             {
-                var lastFrame = frames[^1];
-                if (lastFrame.IsSpare())
+                frames[^1].AddExtra(firstShot);
+                return;
+            }
+            else if (extraShots == 2)
+            {
+                frames[^1].AddExtra(firstShot + secondShot);
+                frames[^2].AddExtra(firstShot);
+                return;
+            }
+
+            if (frames.Count == maxFrames)
+            {
+                throw new GameoverException("Game is over");
+            }
+
+            var frame = new Frame(firstShot, secondShot);
+            frames.Add(frame);
+
+            if(frames.Count == maxFrames)
+            {
+                if (frame.IsSpare())
                 {
-                    lastFrame.AddExtra(firstShot);
+                    extraShots = 1;
                 }
-                else if(lastFrame.IsStrike())
+                else if (frame.IsStrike())
                 {
-                    lastFrame.AddExtra(firstShot + secondShot);
+                    extraShots = 2;
                 }
             }
-            frames.Add(frame);
+        }
+
+        private void UpdateFrames()
+        {
+            for(int i = 0; i < frames.Count; i++)
+            {
+                int points = 0;
+                if (frames[i].IsStrike())
+                {
+                    points = PointsOfNextTwoRolls(i);
+                }
+                else if (frames[i].IsSpare())
+                {
+                    points = PointsOfNextRoll(i);
+                }
+                frames[i].AddExtra(points);
+            }
         }
 
         public void PrintScoreboard()
         {
-            foreach(Frame f in frames)
+            UpdateFrames();
+            foreach (Frame f in frames)
             {
                 Console.WriteLine(String.Format("{0,3} | {1,3} | {2,3}", f.GetFirstShot(), f.GetSecondShot(), f.GetScore()));
             }
         }
 
+        public int PointsOfNextTwoRolls(int currentFrame)
+        {
+            if(frames.Count <= currentFrame + 1)
+            {
+                return 0;
+            }
+
+            int nextRoll = frames[currentFrame + 1].GetFirstShot();
+            int nextNextRoll = frames[currentFrame + 1].GetSecondShot();
+            if(nextRoll != Frame.NumberOfPins)
+            {
+                return (nextRoll + nextNextRoll);
+            }
+
+            if(frames.Count <= currentFrame + 2)
+            {
+                return nextRoll;
+            }
+
+            nextNextRoll = frames[currentFrame + 2].GetFirstShot();
+            return (nextRoll + nextNextRoll);
+        }
+
+        public int PointsOfNextRoll(int currentFrame)
+        {
+            if (frames.Count <= currentFrame + 1)
+            {
+                return 0;
+            }
+
+            return frames[currentFrame + 1].GetFirstShot();
+        }
+
+        public int GetScore()
+        {
+            UpdateFrames();
+            int sum = 0;
+            foreach(Frame f in frames)
+            {
+                sum += f.GetScore();
+            }
+            return sum;
+        }
+
         public List<Frame> GetFrames()
         {
+            UpdateFrames();
             return frames;
         }
 

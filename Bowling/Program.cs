@@ -10,7 +10,16 @@ namespace Bowling
             var game = new Game();
             game.RollBowling(10, 0);
             game.RollBowling(10, 0);
-            game.RollBowling(4, 5);
+            game.RollBowling(10, 0);
+            game.RollBowling(10, 0);
+            game.RollBowling(10, 0);
+            game.RollBowling(10, 0);
+            game.RollBowling(10, 0);
+            game.RollBowling(10, 0);
+            game.RollBowling(10, 0);
+            game.RollBowling(10, 0);
+            game.RollBowling(10, 10);
+
             game.PrintScoreboard();
         }
     }

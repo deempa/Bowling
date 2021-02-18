@@ -6,6 +6,8 @@ namespace Bowling
 {
     public class Frame
     {
+        public static int NumberOfPins = 10;
+
         int firstShot;
         int secondShot;
         int score;
@@ -34,12 +36,12 @@ namespace Bowling
 
         public bool IsSpare()
         {
-            return firstShot + secondShot == 10 && firstShot != 10;
+            return firstShot + secondShot == NumberOfPins && firstShot != NumberOfPins;
         }
 
         public bool IsStrike()
         {
-            return firstShot == 10;
+            return firstShot == NumberOfPins;
         }
 
         public void AddExtra(int points)
